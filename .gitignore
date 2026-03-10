@@ -4,3 +4,10 @@ dist/
 .env.local
 *.log
 .DS_Store
+.playwright-cli/
+vite-project/
+after-erase-tab0
+after-erase-tab1
+before-erase
+tab0-text
+tab1-text

@@ -1,7 +1,0 @@
-- generic [ref=e3]:
-  - heading "CollabWhiteboard" [level=1] [ref=e4]
-  - paragraph [ref=e5]: Real-time collaborative drawing — no account needed
-  - button "Create new room" [active] [ref=e6] [cursor=pointer]
-  - generic [ref=e7]:
-    - textbox "Enter room ID…" [ref=e8]
-    - button "Join" [ref=e9] [cursor=pointer]
