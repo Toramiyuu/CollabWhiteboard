@@ -45,7 +45,8 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
   const [users, setUsers] = useState<RemoteUser[]>([]);
 
   useEffect(() => {
-    const socket: AppSocket = io({ path: '/socket.io' });
+    const serverUrl = import.meta.env.VITE_SERVER_URL ?? '';
+    const socket: AppSocket = io(serverUrl, { path: '/socket.io' });
     socketRef.current = socket;
 
     socket.on('connect', () => {
