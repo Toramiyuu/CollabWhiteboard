@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: collabwhiteboard-server
+    runtime: node
+    buildCommand: npm install && cd server && npm run build
+    startCommand: node server/dist/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
