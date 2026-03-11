@@ -5,5 +5,8 @@
   "main": "./types.ts",
   "exports": {
     ".": "./types.ts"
+  },
+  "scripts": {
+    "build": "echo 'shared: nothing to build'"
   }
 }
