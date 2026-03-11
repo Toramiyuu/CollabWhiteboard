@@ -12,12 +12,12 @@
     "@collabwhiteboard/shared": "*",
     "express": "^5.1.0",
     "nanoid": "^5.1.5",
-    "socket.io": "^4.8.3"
+    "socket.io": "^4.8.3",
+    "tsx": "^4.20.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
     "@types/node": "^22.15.34",
-    "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
   }
