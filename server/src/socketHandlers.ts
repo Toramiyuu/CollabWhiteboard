@@ -49,6 +49,10 @@ export function registerHandlers(socket: AppSocket, io: AppServer, rm: RoomManag
     if (!roomId) { callback(false); return; }
     const result = rm.undo(roomId, socket.data.userId);
     if (!result) { callback(false); return; }
+    // Broadcast restored elements to all clients (including requester) before event
+    for (const el of result.restoredElements) {
+      io.to(roomId).emit('element:added', el);
+    }
     socket.to(roomId).emit('history:undone', result);
     callback(result);
   });
@@ -58,6 +62,10 @@ export function registerHandlers(socket: AppSocket, io: AppServer, rm: RoomManag
     if (!roomId) { callback(false); return; }
     const result = rm.redo(roomId, socket.data.userId);
     if (!result) { callback(false); return; }
+    // Broadcast re-added elements to all clients (including requester) before event
+    for (const el of result.addedElements) {
+      io.to(roomId).emit('element:added', el);
+    }
     socket.to(roomId).emit('history:redone', result);
     callback(result);
   });

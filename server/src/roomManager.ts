@@ -79,7 +79,7 @@ export class RoomManager {
     return removed;
   }
 
-  undo(roomId: string, userId: string): { removedIds: string[]; restoredIds: string[] } | null {
+  undo(roomId: string, userId: string): { removedIds: string[]; restoredIds: string[]; restoredElements: DrawingElement[] } | null {
     const room = this.getRoom(roomId);
     if (!room) return null;
 
@@ -96,6 +96,7 @@ export class RoomManager {
     const entry = room.history.splice(idx, 1)[0];
     const removedIds: string[] = [];
     const restoredIds: string[] = [];
+    const restoredElements: DrawingElement[] = [];
 
     if (entry.kind === 'add') {
       // Reverse: remove the added elements
@@ -106,10 +107,12 @@ export class RoomManager {
       // Reverse: restore the removed elements
       room.elements.push(...entry.removed);
       restoredIds.push(...entry.removed.map(e => e.id));
+      restoredElements.push(...entry.removed);
     } else if (entry.kind === 'clear') {
       // Reverse: restore all removed elements
       room.elements.push(...entry.removed);
       restoredIds.push(...entry.removed.map(e => e.id));
+      restoredElements.push(...entry.removed);
     }
 
     // Push to redo stack
@@ -117,10 +120,10 @@ export class RoomManager {
     redoStack.push(entry);
     room.redoStacks.set(userId, redoStack);
 
-    return { removedIds, restoredIds };
+    return { removedIds, restoredIds, restoredElements };
   }
 
-  redo(roomId: string, userId: string): { addedIds: string[]; removedIds: string[] } | null {
+  redo(roomId: string, userId: string): { addedIds: string[]; removedIds: string[]; addedElements: DrawingElement[] } | null {
     const room = this.getRoom(roomId);
     if (!room) return null;
 
@@ -130,10 +133,12 @@ export class RoomManager {
     const entry = redoStack.pop()!;
     const addedIds: string[] = [];
     const removedIds: string[] = [];
+    const addedElements: DrawingElement[] = [];
 
     if (entry.kind === 'add') {
       room.elements.push(...entry.added);
       addedIds.push(...entry.added.map(e => e.id));
+      addedElements.push(...entry.added);
     } else if (entry.kind === 'erase') {
       const idSet = new Set(entry.removed.map(e => e.id));
       room.elements = room.elements.filter(e => !idSet.has(e.id));
@@ -147,7 +152,7 @@ export class RoomManager {
     // Re-add to history
     room.history.push(entry);
 
-    return { addedIds, removedIds };
+    return { addedIds, removedIds, addedElements };
   }
 
   clearCanvas(roomId: string, userId: string): string[] {
