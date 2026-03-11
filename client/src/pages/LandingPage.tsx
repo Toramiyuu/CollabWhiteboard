@@ -6,7 +6,8 @@ export function LandingPage() {
   const navigate = useNavigate();
 
   const createRoom = async () => {
-    const res = await fetch('/api/rooms', { method: 'POST' });
+    const serverUrl = import.meta.env.VITE_SERVER_URL ?? '';
+    const res = await fetch(`${serverUrl}/api/rooms`, { method: 'POST' });
     const { roomId } = await res.json() as { roomId: string };
     navigate(`/room/${roomId}`);
   };
